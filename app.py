@@ -58,7 +58,7 @@ def login():
             return redirect(url_for('login'))
         else:
             flash('Usuario Invalido.')
-            return redirect(url_for('login'))             
+            return redirect(url_for('login'))              
     else:
         return render_template('auth/login.html')
     
