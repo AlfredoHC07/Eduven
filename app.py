@@ -34,26 +34,26 @@ def login():
         user_post     = request.form['username']
         password_post = request.form['password']
         
-        user_post = user_post.lower()
+        user_lower = user_post.lower()
         
-        user_logged = Usuario.user_logg(db, user_post)
+        user_logged = Usuario.user_logg(db, user_lower)
         
         if user_logged != None:
-            if user_post == user_logged[0] and password_post == '':
+            if user_lower == user_logged[0] and password_post == '':
                 flash('Ingresa la contraseña.')
                 return redirect(url_for('login'))
-            elif user_post == user_logged[0] and password_post != user_logged[1]:
+            elif user_lower == user_logged[0] and password_post != user_logged[1]:
                 flash('Contraseña Incorrecta.')
                 return redirect(url_for('login'))
-            elif user_post == user_logged[0] and password_post == user_logged[1]:
+            elif user_lower == user_logged[0] and password_post == user_logged[1]:
                 return render_template('home/home.html')
             else:
                 flash('Ocurrio un error.')
             return redirect(url_for('login'))  
-        elif user_post == '' and password_post == '':
+        elif user_lower == '' and password_post == '':
             flash('Por favor ingrese los datos.')
             return redirect(url_for('login'))
-        elif user_post == '' and password_post != '':
+        elif user_lower == '' and password_post != '':
             flash('Datos ingresados de manera incorrecta.')
             return redirect(url_for('login'))
         else:
@@ -70,18 +70,27 @@ def register():
         check_password = request.form['conf_password']
         full_name      = request.form['full_name']
         
-        user = user.lower()
+        user_lower = user.lower()
         
-        user_checking = Usuario.user_logg(db, user)
+        user_checking = Usuario.user_logg(db, user_lower)
         
-        if user_checking:
+        if user_lower == '' or full_name == '' or password == '' or check_password == '':
+            flash('Debe ingresas todos los datos')
+            return redirect(url_for('register'))
+        elif user_checking:
             flash('El usuario ya existe en el Sistema.')
             return redirect(url_for('register'))
         elif user_checking == None:
-            if user == '' or full_name == '' or password == '' or check_password == '':
-                flash('Debe ingresas todos los datos')
-                return redirect(url_for('register'))
-            elif password != check_password:
+            for i in user_lower:
+                if i == ' ':
+                    flash('El usuario no puede poseer espacios.')
+                    return redirect(url_for('register'))
+            for i in password:
+                if i == ' ':
+                    flash('La contraseña no puede poseer espacios.')
+                    return redirect(url_for('register')) 
+                   
+            if password != check_password:
                 flash('Las contraseñas no coinciden.')
                 return redirect(url_for('register'))
             else:
