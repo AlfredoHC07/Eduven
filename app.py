@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 # from db import Session, engine
-from src.models.user import Usuario
+from models.user import Usuario
 import psycopg2
 # from flask_login import LoginManager, login_user, logout_user, login_required
 
@@ -33,6 +33,8 @@ def login():
     if request.method=='POST':
         user_post     = request.form['username']
         password_post = request.form['password']
+        
+        user_post = user_post.lower()
         
         user_logged = Usuario.user_logg(db, user_post)
         
@@ -68,6 +70,8 @@ def register():
         check_password = request.form['conf_password']
         full_name      = request.form['full_name']
         
+        user = user.lower()
+        
         user_checking = Usuario.user_logg(db, user)
         
         if user_checking:
@@ -81,7 +85,7 @@ def register():
                 flash('Las contraseñas no coinciden.')
                 return redirect(url_for('register'))
             else:
-                user_res = (user, password, full_name)
+                user_res = (user_lower, password, full_name)
                 try:
                     Usuario.user_res(db, user_res)
                     flash('Usuario registrado con éxito.')
@@ -101,4 +105,4 @@ def home():
     
 if __name__=='__main__':
     # app.config.from_object(config['development'])
-    app.run()
+    app.run(port=5555)
