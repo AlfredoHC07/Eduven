@@ -1,0 +1,44 @@
+{% extends './base.html' %}
+
+{% block title %}EduVen - Inventario{% endblock %}
+
+{% block customCSS %}
+
+{% endblock %}
+
+{% block body %}
+    <div style="padding-top: 10px;" class="text-center">
+        <div class="container">
+            <h1>Registro de Inventario</h1>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr >
+                        <th scope="col">Objeto</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Fecha de Registro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                        <tr>
+                            <td> 
+                                {{ record.objectt }}                               
+                            </td>
+                            <td>  
+                                {{ record.description }}                       
+                            </td>
+                            <td>  
+                                {{ record.state }}                              
+                            </td>
+                            <td>   
+                                {{ record.create }}                             
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="/inventory/create"><button class="w-100 btn btn-lg btn-primary">Registrar</button></a>
+        </div>
+    </div>
+{% endblock %} 
