@@ -10,37 +10,45 @@
 {% endblock %}
 
 {% block body %}
+<a href="/"><img style="padding-left: 20px;" src="{{ url_for('static', filename='img/prev.png') }}" alt="" width="50" height="50"></a>
 <div class="text-center">
     <div class="container">
-        <form class="form-signin" action="/inventory/create" method="POST">
-            <!-- <img class="mb-4" src="{{ url_for('static', filename='img/register.png') }}" alt="" width="150" height="150"> -->
-            <h1 class="h3 mb-3 fw-normal">Registro de Objeto</h1>
-            
-            <div class="form-floating">
-                <input type="text" class="form-control" id="object" name="object" placeholder="Objeto">
-                <label for="object">Objeto</label>
+        <div class="card">
+            <div class="card-header">
+                <h1 class="h3 mb-3 fw-normal"><i>Registro de Objeto</i></h1>
             </div>
-            <div class="form-floating">
-                <textarea class="form-control" id="description" name="description" rows="4" placeholder="Descripcion" style="resize: none; height: 200px"></textarea>
-                <label for="description">Descripcion</label>
+            <div class="card-body">
+                <form class="form-signin" action="/inventory/create" method="POST">
+                    <!-- <img class="mb-4" src="{{ url_for('static', filename='img/register.png') }}" alt="" width="150" height="150"> -->
+                    
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="object" name="object" placeholder="Objeto">
+                        <label for="object">Objeto</label>
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Descripcion" style="resize: none; height: 200px"></textarea>
+                        <label for="description">Descripcion</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="state" name="state" placeholder="Estado del Objeto">
+                        <label for="state">Estado del Objeto</label>
+                    </div>
+                    
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-primary alert-dismissible" role="alert">
+                                    <strong>{{ message }}</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %} 
+                    <h1></h1>
+                    <button style="width: 15%;" class="btn btn-lg btn-primary" type="submit">Guardar</button>
+                </form>
             </div>
-            <div class="form-floating">
-                <input type="text" class="form-control" id="state" name="state" placeholder="Estado del Objeto">
-                <label for="state">Estado del Objeto</label>
-            </div>
-            
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-primary alert-dismissible" role="alert">
-                            <strong>{{ message }}</strong>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %} 
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Guardar</button>
-        </form>
+        </div>        
     </div>
 </div>
 {% endblock %} 

@@ -11,40 +11,45 @@
 
 {% block body %}
 <div class="text-center" style="padding-top: 20px;">
-    <div class="container">
-        <form class="form-signin" action="/auth/register" method="POST">
-            <img class="mb-4" src="{{ url_for('static', filename='img/register.png') }}" alt="" width="150" height="150">
-            <h1 class="h3 mb-3 fw-normal">Registro</h1>
-            
-            <div class="form-floating">
-                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Username">
-                <label for="username">Nombre Completo</label>
+    <div class="container" style="width: 50%;">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-signin" action="/auth/register" method="POST">
+                    <img class="mb-4" src="{{ url_for('static', filename='img/register.png') }}" alt="" width="150" height="150">
+                    <h1 class="h3 mb-3 fw-normal">Registro</h1>
+                    
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Username">
+                        <label for="username">Nombre Completo</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="new_username" name="new_username" placeholder="Username">
+                        <label for="username">Usuario</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" class="form-control" name="new_password" placeholder="Password">
+                        <label for="password">Contraseña</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" class="form-control" name="conf_password" placeholder="Password">
+                        <label for="password">Confirmar Contraseña</label>
+                    </div> 
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-primary alert-dismissible" role="alert">
+                                    <strong>{{ message }}</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %} 
+                    <h1></h1>
+                    <button style="width: 25%;" class="btn btn-lg btn-primary" type="submit">Registrar</button>
+                </form>
             </div>
-            <div class="form-floating">
-                <input type="text" class="form-control" id="new_username" name="new_username" placeholder="Username">
-                <label for="username">Usuario</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" name="new_password" placeholder="Password">
-                <label for="password">Contraseña</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" class="form-control" name="conf_password" placeholder="Password">
-                <label for="password">Confirmar Contraseña</label>
-            </div> 
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-primary alert-dismissible" role="alert">
-                            <strong>{{ message }}</strong>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %} 
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar</button>
-            <p class="mt-5 mb-3 text-muted">&copy; EduVEn 2022</p>
-        </form>
+        </div>  
+        <p class="text-muted">&copy; EduVEn 2022</p>      
     </div>
 </div>
 {% endblock %} 

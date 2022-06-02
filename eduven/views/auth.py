@@ -22,6 +22,7 @@ def register():
         
         SpecialSym =['#', '$', '%', '&', '*', '+', '.', '@'] 
         val = True
+        val2 = True
         
         user_lower = username.lower()
         
@@ -32,13 +33,13 @@ def register():
         if user_lower == '' or fullname == '' or password == '' or conf_password == '':
             flash('Debe ingresas todos los datos')
 
-        elif user_name == None:
+        elif user_name == None:             
             if len(password) < 6: 
-                flash('La longitud debe ser de al menos 6.') 
+                flash('La longitud de la contraseña debe ser de al menos 6 digitos.') 
                 val = False
                 
             if len(password) > 20: 
-                flash('La longitud no debe ser superior a 8.') 
+                flash('La longitud de la contraseña no debe ser superior a 8 digitos.') 
                 val = False
                 
             if not any(char.isdigit() for char in password): 
@@ -67,6 +68,8 @@ def register():
             if val:            
                 if password != conf_password:
                     flash('Las contraseñas no coinciden.')
+                elif any(char.isdigit() for char in fullname): 
+                    flash('El nombre no puede tener numeros.')
                 else:
                     db.session.add(user)
                     db.session.commit()
