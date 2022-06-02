@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block body %}
-<a href="/"><img style="padding-left: 20px;" src="{{ url_for('static', filename='img/prev.png') }}" alt="" width="50" height="50"></a>
+<a href="{{ url_for('inventory.records') }}"><img style="padding-left: 20px;" src="{{ url_for('static', filename='img/prev.png') }}" alt="" width="50" height="50"></a>
 <div class="text-center">
     <div class="container">
         <div class="card">
@@ -19,10 +19,8 @@
             </div>
             <div class="card-body">
                 <form class="form-signin" action="/inventory/create" method="POST">
-                    <!-- <img class="mb-4" src="{{ url_for('static', filename='img/register.png') }}" alt="" width="150" height="150"> -->
-                    
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="object" name="object" placeholder="Objeto">
+                        <input type="text" class="form-control" id="object" name="object" placeholder="Objeto" maxlength="50">
                         <label for="object">Objeto</label>
                     </div>
                     <div class="form-floating">
@@ -30,10 +28,12 @@
                         <label for="description">Descripcion</label>
                     </div>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="state" name="state" placeholder="Estado del Objeto">
-                        <label for="state">Estado del Objeto</label>
-                    </div>
-                    
+                        <select class="form-select" aria-label="Default select example" name="state">
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                            <option value="En Recuperacion">En Recuperacion</option>
+                        </select>
+                    </div>                    
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
                             {% for message in messages %}

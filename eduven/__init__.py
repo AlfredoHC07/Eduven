@@ -14,4 +14,7 @@ app.register_blueprint(auth)
 from eduven.views.inventory import invent
 app.register_blueprint(invent)
 
+from eduven.views.index import home
+app.register_blueprint(home)
+
 db.create_all()

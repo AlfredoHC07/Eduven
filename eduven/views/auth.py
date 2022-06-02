@@ -14,7 +14,10 @@ auth = Blueprint('auth', __name__, url_prefix='/auth')
 #Registrar un usuario
 @auth.route('/register', methods=('GET','POST'))
 def register():
-    if request.method == 'POST':
+    if g.user:
+        return redirect('/')
+    
+    elif request.method == 'POST':
         fullname = request.form.get('full_name')
         username = request.form.get('new_username')
         password = request.form.get('new_password')
@@ -86,7 +89,10 @@ def register():
 #Ingresar
 @auth.route('/login', methods=('GET','POST'))
 def login():
-    if request.method == 'POST':
+    if g.user:
+        return redirect('/')
+    
+    elif request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
         
@@ -105,7 +111,7 @@ def login():
             else:
                 session.clear()
                 session['user_id'] = user.id
-                return redirect(url_for('inventory.index'))
+                return redirect(url_for('inventory.records'))
     
     return render_template('auth/login.html')
 
@@ -122,7 +128,7 @@ def load_logged_in_user():
 @auth.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('inventory.index'))
+    return redirect(url_for('auth.login'))
 
 def login_required(view):
     @functools.wraps(view)

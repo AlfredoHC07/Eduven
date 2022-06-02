@@ -1,0 +1,67 @@
+{% extends './base.html' %}
+
+{% block title %}EduVen - Inventario{% endblock %}
+
+{% block customCSS %}
+
+{% endblock %}
+
+{% block body %}
+    <div style="padding-top: 10px;" class="text-center">
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <h1><i>Registro de Inventario</i></h1>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr >
+                                <th scope="col">Objeto</th>
+                                <th scope="col">Descripcion</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Fecha de Registro</th>
+                                <th scope="col">Guardado Por</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                                <tr>
+                                    <td> 
+                                        {{ record.objectt }}                               
+                                    </td>
+                                    <td style="text-align: justify;" width="50%">  
+                                        {{ record.description }}                       
+                                    </td>
+                                    <td>
+                                        {% if record.state == 'Activo' %}
+                                            <p class="badge badge-pill badge-success">{{ record.state }}</p>
+                                        {% elif record.state == 'Inactivo' %}
+                                            <p class="badge badge-pill badge-danger">{{ record.state }}</p>
+                                        {% else %}
+                                            <p class="badge badge-pill badge-warning">{{ record.state }}</p>  
+                                        {% endif %}                          
+                                    </td>
+                                    <td width="15%">   
+                                        {{ record.create.strftime('%d-%m-%Y') }}                             
+                                    </td>
+                                    <td>   
+                                        {{ get_user(record.author).fullname }}                             
+                                    </td>
+                                    <td>
+                                        {% if g.user.id == record.author %}
+                                            <a href="{{ url_for('inventory.update', id=record.id) }}"><button class="btn btn-lg btn-primary">Editar</button></a>
+                                            </br>
+                                            <h1></h1>
+                                            <a href="{{ url_for('inventory.delete', id=record.id) }}"><button class="btn btn-lg btn-danger">Eliminar</button></a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{{ url_for('inventory.create') }}"><button style="width: 15%;" class="btn btn-lg btn-primary">Agregar</button></a>
+                </div>
+            </div>            
+        </div>
+    </div>
+{% endblock %} 

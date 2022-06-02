@@ -1,0 +1,55 @@
+{% extends './base.html' %}
+
+{% block title %}Editar Registro{% endblock %}
+
+{% block customCSS %}
+
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
+<a href="{{ url_for('inventory.records') }}"><img style="padding-left: 20px;" src="{{ url_for('static', filename='img/prev.png') }}" alt="" width="50" height="50"></a>
+<div class="text-center">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="h3 mb-3 fw-normal"><i>Registro a Editar</i></h1>
+            </div>
+            <div class="card-body">
+                <form class="form-signin" action="/inventory/update/{{ record.id }}" method="POST">                    
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="object" name="object" placeholder="Objeto" maxlength="50" value="{{ record.objectt }}" >
+                        <label for="object">Objeto</label>
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" id="description" name="description" rows="4" placeholder="Descripcion" style="resize: none; height: 200px">{{ record.description }}</textarea>
+                        <label for="description">Descripcion</label>
+                    </div>
+                    <div class="form-floating">
+                        <select class="form-select" aria-label="Default select example" name="state">
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                            <option value="En Recuperacion">En Recuperacion</option>
+                            <option selected="selected" style="display: none;">{{ record.state }}</option>
+                        </select>
+                    </div>                    
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-primary alert-dismissible" role="alert">
+                                    <strong>{{ message }}</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %} 
+                    <h1></h1>
+                    <button style="width: 15%;" class="btn btn-lg btn-primary" type="submit">Guardar</button>
+                </form>
+            </div>
+        </div>        
+    </div>
+</div>
+{% endblock %} 

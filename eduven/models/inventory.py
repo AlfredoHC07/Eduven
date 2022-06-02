@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from eduven import db
 
 class Inventory(db.Model):
@@ -8,7 +8,7 @@ class Inventory(db.Model):
     objectt = db.Column(db.String(50))
     description = db.Column(db.Text)
     state = db.Column(db.String(20))
-    create = db.Column(db.String(20), nullable=False, default=date.today())
+    create = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     
     def __init__(self, author, objectt, description, state) -> None:
         self.author = author
