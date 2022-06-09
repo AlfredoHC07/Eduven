@@ -3,7 +3,7 @@
 {% block title %}Perfil{% endblock %}
 
 {% block customCSS %}
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
 {% endblock %}
 
 {% block header %}
@@ -11,62 +11,114 @@
 
 {% block body %}
 <a href="{{ url_for('inventory.records') }}"><img style="padding-left: 20px;" src="{{ url_for('static', filename='img/prev.png') }}" alt="" width="50" height="50"></a>
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h1 style="text-align: center;" class="h3 mb-3 fw-normal"><i>Datos de Ususario</i></h1>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1 style="text-align: center;" class="h3 mb-3 fw-normal"><i>Datos de Ususario</i></h1>
+        </div>
+        <div class="card-body">
+            <div style="text-align: center; position: relative;">
+                {% if  record_image.image %}
+                    <img class="avatar" src="{{ url_for('static', filename=record_image.image) }}" alt="">
+                {% else %}
+                    <img class="avatar" src="{{ url_for('static', filename='img/img.jpg') }}" alt="">
+                {% endif %}
+                <br>
+                <h1><i>{{ record.username }}</i></h1>
             </div>
-            <div class="card-body">
-                <div style="text-align: center; position: relative;">
-                    <img class="mb-4 img-circle" src="{{ url_for('static', filename='img/register.png') }}" alt="" width="150" height="150">
-                    <h2>{{ record.image }}</h2>
-                    <br>
-                    <h1><i>{{ record.username }}</i></h1>
-                </div>
-                <div style="float:right; position: relative; margin-bottom: 10px;">
-                    <button class="btn btn-lg btn-primary" onclick="editProfile()">Editar</button>
-                </div>
-                <br><br><br>
+            <div style="float:left; position: relative; margin-bottom: 10px;">
+                {% if not record_image.image %}
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#image_profile">Agregar Foto de Perfil</button>
+                {% else %}
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_image_profile">Actualizar Foto de Perfil</button>
+                {% endif %}
+            </div>
+            <div style="float:right; position: relative; margin-bottom: 10px;">
+                <button class="btn btn-primary" onclick="editProfile()">Editar Usuario</button>
+            </div>
+            <br><br><br>
 
-                <div>
-                    <form class="form-signin" action="/user/profile/{{ record.id }}" method="POST" enctype="multipart/form-data">                                        
+            <div>
+                <form class="form-signin" action="/user/profile/{{ record.id }}" method="POST" enctype="multipart/form-data">                                        
+                    <div class="form-floating">
+                        <input value="{{ record.fullname }}" type="text" class="form-control" id="full_name" name="full_name" placeholder="Username" readonly>
+                        <label for="username">Nombre Completo</label>
+                    </div>
+                    <div id="form_profile" style="display: none;">
                         <div class="form-floating">
-                            <input value="{{ record.fullname }}" type="text" class="form-control" id="full_name" name="full_name" placeholder="Username" readonly>
-                            <label for="username">Nombre Completo</label>
+                            <input type="password" class="form-control" name="new_password" placeholder="Password">
+                            <label for="password">Contraseña</label>
                         </div>
-                        <div id="form_profile" style="display: none;">
-                            <div class="form-floating">
-                                <input type="password" class="form-control" name="new_password" placeholder="Password">
-                                <label for="password">Contraseña</label>
-                            </div>
-                            <div class="form-floating">
-                                <input type="password" class="form-control" name="conf_password" placeholder="Password">
-                                <label for="password">Confirmar Contraseña</label>
-                            </div>
-                            <div class="mb-3">
-                                <input class="form-control" type="file" id="formFile" name="image">
-                            </div> 
-                            <div style="text-align:center;">
-                                <button style="width: 15%;" class="btn btn-lg btn-primary" type="submit">Guardar</button>
-                            </div> 
+                        <div class="form-floating">
+                            <input type="password" class="form-control" name="conf_password" placeholder="Password">
+                            <label for="password">Confirmar Contraseña</label>
                         </div>
-                                   
-                        {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <div class="alert alert-primary alert-dismissible" role="alert">
-                                        <strong>{{ message }}</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %} 
-                        <h1></h1>
-                    </form>
+                        
+                        <div style="text-align:center;">
+                            <button style="width: 15%;" class="btn btn-lg btn-primary" type="submit">Guardar</button>
+                        </div> 
+                    </div>
+                                
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-primary alert-dismissible" role="alert">
+                                    <strong>{{ message }}</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %} 
+                    <h1></h1>
+                </form>
+            </div>                 
+        </div>
+    </div>        
+</div>
+
+<div class="modal fade" id="image_profile" tabindex="-1" role="dialog" aria-labelledby="image_profile_label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="image_profile_label">Imagen de Perfil</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form class="form-signin" action="/user/image" method="POST" enctype="multipart/form-data"> 
+                <div class="mb-3">
+                    <label for="username">Imagen de Perfil</label>
+                    <input class="form-control" type="file" id="formFile" name="image">
                 </div>                 
-            </div>
-        </div>        
+                <button type="submit" class="btn btn-primary">Guardar Imagen</button>
+            </form>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="modal fade" id="update_image_profile" tabindex="-1" role="dialog" aria-labelledby="update_image_profile_label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="update_image_profile_label">Actualizar Imagen de Perfil</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form class="form-signin" action="/user/image-update/{{ record.id }}" method="POST" enctype="multipart/form-data"> 
+                <div class="mb-3">
+                    <label for="username">Imagen de Perfil</label>
+                    <input class="form-control" type="file" id="formFile" name="image_new">
+                </div>                 
+                <button type="submit" class="btn btn-primary">Guardar Imagen</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 {% endblock %} 

@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER_IMG = os.path.abspath('eduven/.uploat/img/')
+UPLOAD_FOLDER_IMG = os.path.abspath('eduven/static/img/uploat/')
 
 #Configuracion
 app.config.from_object('config.DevelopmentConfig')

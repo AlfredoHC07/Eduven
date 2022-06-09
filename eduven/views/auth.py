@@ -5,9 +5,13 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from eduven.models.user import User
 
-from eduven import db
+from eduven.models.image import Image
+
+from eduven import db, app
 
 import functools
+
+import os
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -127,6 +131,9 @@ def load_logged_in_user():
         
 @auth.route('/logout')
 def logout():
+    image = Image.query.filter_by(author=g.user.id).first()
+    os.remove(os.path.abspath(f'{app.config["UPLOAD_FOLDER"]}/{image.filename}'))
+        
     session.clear()
     return redirect(url_for('auth.login'))
 
