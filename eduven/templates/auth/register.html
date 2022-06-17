@@ -3,7 +3,7 @@
 {% block title %}Registrar Usuario{% endblock %}
 
 {% block customCSS %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
 {% endblock %}
 
 {% block header %}
@@ -14,25 +14,37 @@
     <div class="container" style="width: 50%;">
         <div class="card">
             <div class="card-body">
-                <form class="form-signin" action="/auth/register" method="POST">
-                    <img class="mb-4" src="{{ url_for('static', filename='img/register.png') }}" alt="" width="150" height="150">
-                    <h1 class="h3 mb-3 fw-normal">Registro</h1>
+                <img class="mb-4" src="{{ url_for('static', filename='img/register.png') }}" alt="" width="150" height="150">
+                <h1 class="h3 mb-3 fw-normal">Registro</h1>
+                <form style="width: 600px;" class="form-signin" action="/auth/register" method="POST">
                     
-                    <div class="form-floating">
+                    <div class="form-floating flex">
                         <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Username">
                         <label for="username">Nombre Completo</label>
+                        <img src="{{ url_for('static', filename='img/ayuda.png') }}" alt="" width="50" height="50" data-toggle="tooltip" data-placement="right" title="Nombre Completo del Usuario.">
                     </div>
-                    <div class="form-floating">
+                    <div class="form-floating flex">
                         <input type="text" class="form-control" id="new_username" name="new_username" placeholder="Username">
                         <label for="username">Usuario</label>
+                        <img src="{{ url_for('static', filename='img/ayuda.png') }}" alt="" width="50" height="50" data-toggle="tooltip" data-placement="right" title="El Usuario no puede poseer espacios.">
                     </div>
-                    <div class="form-floating">
+                    <div class="form-floating flex">
                         <input type="password" class="form-control" name="new_password" placeholder="Password">
                         <label for="password">Contraseña</label>
+                        <img src="{{ url_for('static', filename='img/ayuda.png') }}" alt="" width="50" height="50" data-toggle="tooltip" data-placement="right" 
+                            title="---->
+                            La longitud de la contraseña debe ser de al menos 6 digitos.
+                            La longitud de la contraseña no debe ser superior a 8 digitos.
+                            La contraseña debe tener al menos un número.
+                            La contraseña no puede poseer espacios.
+                            La contraseña debe tener al menos una letra mayúscula.
+                            La contraseña debe tener al menos una letra minúscula.
+                            La contraseña debe tener al menos uno de estos caracteres # $ % & * + . @">
                     </div>
-                    <div class="form-floating">
+                    <div class="form-floating flex">
                         <input type="password" class="form-control" name="conf_password" placeholder="Password">
                         <label for="password">Confirmar Contraseña</label>
+                        <img src="{{ url_for('static', filename='img/ayuda.png') }}" alt="" width="50" height="50" data-toggle="tooltip" data-placement="right" title="Las contraseñas deben coincidir.">
                     </div> 
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
@@ -46,6 +58,7 @@
                     {% endwith %} 
                     <h1></h1>
                     <button style="width: 25%;" class="btn btn-lg btn-primary" type="submit">Registrar</button>
+                      
                 </form>
             </div>
         </div>  
